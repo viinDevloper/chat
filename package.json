@@ -17,6 +17,7 @@
   "dependencies": {
     "@expo/vector-icons": "^14.0.0",
     "@react-navigation/native": "^6.1.7",
+    "@types/emoji-mart": "^3.0.14",
     "ably": "^2.4.0",
     "emoji-mart": "^5.6.0",
     "expo": "^51.0.35",

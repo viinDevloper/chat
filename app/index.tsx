@@ -9,7 +9,7 @@ import {
   Platform,
 } from "react-native";
 import * as Ably from "ably";
-import { Picker } from "emoji-mart";
+import Picker from "emoji-mart";
 import React, { useState, useEffect } from "react";
 
 //  chave API do Ably
@@ -26,7 +26,7 @@ interface Message {
 
 const Chat: React.FC = () => {
   const [messageText, setMessageText] = useState<string>("");
-  const [messages, setMessages] = useState<Message[]>([]);
+  const [messages, setMessages] = useState<Message[] | Ably.Message[]>([]);
   const [emojiPickerOpen, setEmojiPickerOpen] = useState<boolean>(false); // Controle do picker de emojis
   const [onlineUsers, setOnlineUsers] = useState<string[]>([]);
 
@@ -51,7 +51,7 @@ const Chat: React.FC = () => {
 
   useEffect(() => {
     // Subscreve ao canal para receber mensagens
-    channel.subscribe("message", (message: Ably.Types.Message) => {
+    channel.subscribe("message", (message: Ably.Message) => {
       setMessages((prevMessages) => [
         ...prevMessages,
         {
@@ -67,7 +67,7 @@ const Chat: React.FC = () => {
     channel.presence.enter("User");
 
     // Subscrever à presença para monitorar usuários online
-    const presenceListener = (members: Ably.Types.PresenceMessage[]) => {
+    const presenceListener = (members: Ably.PresenceMessage[]) => {
       setOnlineUsers(members.map((member) => member.clientId));
     };
 

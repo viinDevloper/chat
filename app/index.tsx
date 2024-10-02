@@ -1,4 +1,3 @@
-import React, { useState, useEffect } from "react";
 import {
   Text,
   View,
@@ -11,6 +10,8 @@ import {
 } from "react-native";
 import * as Ably from "ably";
 import { Picker } from "emoji-mart";
+import React, { useState, useEffect } from "react";
+
 //  chave API do Ably
 const ably = new Ably.Realtime(
   "WSoEGA.vhO2Mg:QCs4weA8v0Lv8Lj-sNZ9qxRlflVwsRhbjizNQLC9EHM"
@@ -32,15 +33,14 @@ const Chat: React.FC = () => {
   const channel = ably.channels.get("chat-demo");
 
   const sendMessage = (): void => {
-    if (messageText.trim()) {
-      // Publica a mensagem no canal
-      channel.publish("message", messageText, (err) => {
-        if (err) {
-          console.error("Erro ao enviar mensagem:", err);
-        } else {
-          setMessageText("");
-        }
-      });
+    try {
+      if (messageText.trim()) {
+        // Publica a mensagem no canal
+        channel.publish("message", messageText);
+      }
+      setMessageText("");
+    } catch (error) {
+      console.error(error);
     }
   };
 
